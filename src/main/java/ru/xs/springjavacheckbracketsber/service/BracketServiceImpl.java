@@ -13,20 +13,20 @@ import java.util.Stack;
 public class BracketServiceImpl implements BracketService {
 
     @Override
-    public boolean checkStackBracketMapCycle(InputText input) {
-        log.info("Service => Checking bracket InputText => " + input.inputText());
+    public boolean checkStackBracketMapCycle(InputText inputText) {
+        log.info("Service => Checking bracket inputText => " + inputText.text());
         final Stack<Integer> openBracketIndex = new Stack<>();
         final Map<Integer, Integer> bracketPairs = new HashMap<>();
-        final String inputText = input.inputText();
+        final String text = inputText.text();
 
-        for (int currentIndex = 0; currentIndex < inputText.length(); currentIndex++) {
-            final char currentChar = inputText.charAt(currentIndex);
+        for (int currentIndex = 0; currentIndex < text.length(); currentIndex++) {
+            final char currentChar = text.charAt(currentIndex);
 
             if (currentChar == '(' || currentChar == '[' || currentChar == '{') {
                 openBracketIndex.push(currentIndex);
 
-                if (currentIndex + 1 != inputText.length()) {
-                    final char nextChar = inputText.charAt(currentIndex + 1);
+                if (currentIndex + 1 != text.length()) {
+                    final char nextChar = text.charAt(currentIndex + 1);
 
                     if (currentChar == '(' && nextChar == ')'
                             || currentChar == '[' && nextChar == ']'
@@ -44,15 +44,19 @@ public class BracketServiceImpl implements BracketService {
             }
         }
 
-        if (!openBracketIndex.isEmpty() || bracketPairs.isEmpty()) {
-            return false; // Unbalanced opening bracket or no bracket pairs found
+        if (!openBracketIndex.isEmpty()) {
+            return false; // Unbalanced opening bracket
+        }
+
+        if (bracketPairs.isEmpty()) {
+            return true; // no bracket pairs found
         }
 
         for (Map.Entry<Integer, Integer> entry : bracketPairs.entrySet()) {
             final int openingIndex = entry.getKey();
             final int closingIndex = entry.getValue();
 
-            final String withinBracket = inputText.substring(openingIndex + 1, closingIndex);
+            final String withinBracket = text.substring(openingIndex + 1, closingIndex);
 
             if (withinBracket.isBlank()) {
                 return false; // Empty bracket found

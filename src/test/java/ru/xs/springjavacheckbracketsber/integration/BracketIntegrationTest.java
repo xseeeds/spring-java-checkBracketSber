@@ -13,7 +13,7 @@ import ru.xs.springjavacheckbracketsber.model.InputText;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -26,15 +26,15 @@ public class BracketIntegrationTest {
     @Test
     @SneakyThrows
     public void checkBracket_ValidInputEmpty_ReturnsBadRequest() {
-        final InputText inputText = new InputText("");
+        final InputText text = new InputText("");
 
-        mockMvc.perform(get("/checkBracket")
+        mockMvc.perform(post("/api/checkBrackets")
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(inputText)))
+                        .content(objectMapper.writeValueAsString(text)))
                 .andExpectAll(status()
                                 .isBadRequest(),
-                        jsonPath("$..fieldName").value("inputText"),
+                        jsonPath("$..fieldName").value("text"),
                         jsonPath("$..message")
                                 .value("Не должно быть пустым и содержать только пробелы, не должно быть null"));
 
@@ -43,15 +43,15 @@ public class BracketIntegrationTest {
     @Test
     @SneakyThrows
     public void checkBracket_ValidInputBlank_ReturnsBadRequest() {
-        final InputText inputText = new InputText(" ");
+        final InputText text = new InputText(" ");
 
-        mockMvc.perform(get("/checkBracket")
+        mockMvc.perform(post("/api/checkBrackets")
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(inputText)))
+                        .content(objectMapper.writeValueAsString(text)))
                 .andExpectAll(status()
                                 .isBadRequest(),
-                        jsonPath("$..fieldName").value("inputText"),
+                        jsonPath("$..fieldName").value("text"),
                         jsonPath("$..message")
                                 .value("Не должно быть пустым и содержать только пробелы, не должно быть null"));
 
@@ -60,17 +60,17 @@ public class BracketIntegrationTest {
     @Test
     @SneakyThrows
     public void checkBracket_ValidInputNull_ReturnsBadRequest() {
-        final InputText inputText = new InputText(null);
+        final InputText text = new InputText(null);
 
-        mockMvc.perform(get("/checkBracket")
+        mockMvc.perform(post("/api//checkBrackets")
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(inputText)))
+                        .content(objectMapper.writeValueAsString(text)))
                 .andExpectAll(status()
                                 .isBadRequest(),
                         jsonPath("$.[*]").isArray(),
                         jsonPath("$.violations.[*]", hasSize(1)),
-                        jsonPath("$.violations.[0].fieldName", equalTo("inputText")),
+                        jsonPath("$.violations.[0].fieldName", equalTo("text")),
                         jsonPath("$.violations.[0].message",
                                 equalTo("Не должно быть пустым и содержать только пробелы, не должно быть null")));
     }
@@ -78,7 +78,7 @@ public class BracketIntegrationTest {
     @Test
     @SneakyThrows
     public void checkBracket_ValidInput_ReturnsTrue() {
-        final InputText inputText = new InputText("Вчера я отправился в поход в лес (это мое любимое место для отдыха) вместе с друзьями." +
+        final InputText text = new InputText("Вчера я отправился в поход в лес (это мое любимое место для отдыха) вместе с друзьями." +
                 " Мы выбрали маршрут, который проходил через горные потоки и поля (для разнообразия)." +
                 " В начале пути погода была отличной, солнце светило ярко, и птицы радостно пели." +
                 " Однако, когда мы подошли ближе к вершине горы, небо стало покрываться облаками," +
@@ -86,19 +86,19 @@ public class BracketIntegrationTest {
                 " особенно когда мы достигли высшей точки и увидели прекрасный вид на долину" +
                 " (я почувствовал, что все усилия стоили того).");
 
-        mockMvc.perform(get("/checkBracket")
+        mockMvc.perform(post("/api/checkBrackets")
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(inputText)))
+                        .content(objectMapper.writeValueAsString(text)))
                 .andExpectAll(status()
                                 .isOk(),
-                        content().string(String.valueOf(true)));
+                        jsonPath("$.isCorrect").value("true"));
     }
 
     @Test
     @SneakyThrows
     public void checkBracket_ValidInput_ReturnsFalse() {
-        final InputText inputText = new InputText("Вчера я отправился в поход в лес (это мое любимое место для отдыха) вместе с друзьями." +
+        final InputText text = new InputText("Вчера я отправился в поход в лес (это мое любимое место для отдыха) вместе с друзьями." +
                 " Мы выбрали маршрут, который проходил через горные потоки и поля (для разнообразия)." +
                 " В начале пути погода была отличной, солнце светило ярко, и птицы радостно пели." +
                 " Однако, когда мы подошли ближе к вершине горы, небо стало покрываться облаками," +
@@ -106,13 +106,13 @@ public class BracketIntegrationTest {
                 " особенно когда мы достигли высшей точки и увидели прекрасный вид на долину" +
                 " (я почувствовал, что все усилия стоили того).)");
 
-        mockMvc.perform(get("/checkBracket")
+        mockMvc.perform(post("/api/checkBrackets")
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(inputText)))
+                        .content(objectMapper.writeValueAsString(text)))
                 .andExpectAll(status()
                                 .isOk(),
-                        content().string(String.valueOf(false)));
+                        jsonPath("$.isCorrect").value("false"));
     }
 
 }

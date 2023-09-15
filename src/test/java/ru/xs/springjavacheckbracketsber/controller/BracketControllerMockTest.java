@@ -6,9 +6,11 @@ import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import ru.xs.springjavacheckbracketsber.conroller.BracketControllerImpl;
 import ru.xs.springjavacheckbracketsber.model.InputText;
+import ru.xs.springjavacheckbracketsber.model.Response;
 import ru.xs.springjavacheckbracketsber.service.BracketService;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -21,11 +23,13 @@ public class BracketControllerMockTest {
 
     @Test
     public void testCheckBracketWhenReturnTrue() {
-        when(bracketService.checkStackBracketMapCycle(any(InputText.class)))
-                .thenReturn(true);
+        final Response responseTrue = Response.builder().isCorrect(true).build();
 
-        assertThat(bracketControllerImpl.checkBracket(new InputText("(*)∫(*)")))
-                .isTrue();
+        when(bracketService.checkStackBracketMapCycle(any(InputText.class)))
+                .thenReturn(responseTrue.isCorrect());
+
+        assertThat(bracketControllerImpl.checkBracket(new InputText("(*)∫(*)")),
+                equalTo(responseTrue));
 
         verify(bracketService, atMostOnce())
                 .checkStackBracketMapCycle(any(InputText.class));
@@ -33,11 +37,13 @@ public class BracketControllerMockTest {
 
     @Test
     public void testCheckBracketWhenReturnFalse() {
-        when(bracketService.checkStackBracketMapCycle(any(InputText.class)))
-                .thenReturn(false);
+        final Response responseFalse = Response.builder().isCorrect(true).build();
 
-        assertThat(bracketControllerImpl.checkBracket(new InputText("(*)∫(*)")))
-                .isFalse();
+        when(bracketService.checkStackBracketMapCycle(any(InputText.class)))
+                .thenReturn(responseFalse.isCorrect());
+
+        assertThat(bracketControllerImpl.checkBracket(new InputText("(*)∫(*)")),
+                equalTo(responseFalse));
 
         verify(bracketService, atMostOnce())
                 .checkStackBracketMapCycle(any(InputText.class));

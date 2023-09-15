@@ -15,7 +15,7 @@
     - [Additional Links](#additional-links)
     - [Docker Compose support](#docker-compose-support)
 3. [Language and tools](#language-and-tools)
-4. [Example type inputText](#example-type-inputtext)
+4. [Example type input text](#example-type-input-text)
    - [Request](#request)
    - [Responses](#responses)
    - [Examples](#examples)
@@ -32,31 +32,29 @@
 
 #### Short instruction
 
-```text
-Start Docker, in the console navigate to the programme folder and use the command `docker compose up`.
-```
+* Start Docker, in the console navigate to the programme folder and use the command `docker compose up`.
+
 
 #### Basic instruction
 
-_Потребуется Java 17, Docker, Git, Gradle_
+* _Потребуется Java 17, Docker, Git, Gradle_
 
 #### Preparation
 
-Для работы приложение требуется установленный и запущенный Docker daemon.
-Для проверки его наличия введите следующую команду в консоли
+* Для работы приложение требуется установленный и запущенный Docker daemon. Для проверки его наличия введите следующую команду в консоли
 
 * console
-  ```sh
+  ```shell
   docker version
   ```
 
-Если выводится информация об установленной системе, переходим к следующему шагу.
+* Если выводится информация об установленной системе, переходим к следующему шагу.
 
 #### Running application
 
-_Далее описаны пункты для запуска проекта_
+* _Далее описаны пункты для запуска проекта_
 
-1. С клонировать
+1. Клонировать
     ```shell
     git clone https://github.com/xseeeds/spring-java-checkBracketSber
     ```
@@ -133,28 +131,28 @@ Please make sure to add at least one service in the `compose.yaml` file.
 
 ---
 <details>
-  <summary><h3> Example type inputText </h3></summary>
+  <summary><h3> Example type input text </h3></summary>
 
-#### Example type inputText
+#### Example type input text
 
 #### Request
 
 ```http request
-  GET /checkBracket
-  with body json `inputText`
+  POST /api/checkBracket
+  with json body `text`
 ```
 
 #### Responses
 
-| Code | Description                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-|------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 200  | true                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| 200  | false                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| 400  | {<br/>&ensp;"violations":<br/>&emsp;[<br/>&emsp;&emsp;{<br/>&emsp;&emsp;&emsp;"timestamp": "yyyy-MM-dd HH:mm:ss",<br/>&emsp;&emsp;&emsp;"status": "BAD_REQUEST",<br/>&emsp;&emsp;&emsp;"reason": "ErrorHandler => errorMethodArgumentNotValidException",<br/>&emsp;&emsp;&emsp;"fieldName": "inputText",<br/>&emsp;&emsp;&emsp;"message": "Не должно быть пустым и содержать только пробелы, не должно быть null"<br/>&emsp;&emsp;}<br/>&emsp;]<br/>} |
+| Code | Response                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200  | {<br/>&ensp;&emsp;"isCorrect": true<br/>}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| 200  | {<br/>&ensp;&emsp;"isCorrect": false<br/>}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| 400  | {<br/>&ensp;&emsp;"violations": [<br/>&emsp;&emsp;&emsp;{<br/>&emsp;&emsp;&emsp;&emsp;&emsp;"timestamp": "yyyy-MM-dd HH:mm:ss",<br/>&emsp;&emsp;&emsp;&emsp;&emsp;"status": "BAD_REQUEST",<br/>&emsp;&emsp;&emsp;&emsp;&emsp;"reason": "ErrorHandler => errorMethodArgumentNotValidException",<br/>&emsp;&emsp;&emsp;&emsp;&emsp;"fieldName": "text",<br/>&emsp;&emsp;&emsp;&emsp;&emsp;"message": "Не должно быть пустым и содержать только пробелы, не должно быть null"<br/>&emsp;&emsp;&emsp;}<br/>&ensp;&emsp;]<br/>} |
 
 #### Examples
 
-| Input Type String                      | Answer  |
+| Input type text                        | Result  |
 |:---------------------------------------|:--------|
 | `1) => (`                              | `false` |
 | `2) => ()[]{}`                         | `false` |
@@ -166,7 +164,7 @@ Please make sure to add at least one service in the `compose.yaml` file.
 | `8) => abc(def`                        | `false` |
 | `9) => (abc(def)`                      | `false` |
 | `10) => (text)`                        | `true`  |
-| `11) => text`                          | `false` |
+| `11) => only text`                     | `true`  |
 | `12) => ()`                            | `false` |
 | `13) => (   )`                         | `false` |
 | `14) => (  text  )`                    | `true`  |

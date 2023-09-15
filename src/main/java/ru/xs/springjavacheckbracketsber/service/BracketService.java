@@ -4,6 +4,6 @@ import ru.xs.springjavacheckbracketsber.model.InputText;
 
 public interface BracketService {
 
-    boolean checkStackBracketMapCycle(InputText input);
+    boolean checkStackBracketMapCycle(InputText inputText);
 
 }
