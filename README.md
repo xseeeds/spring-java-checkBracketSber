@@ -123,6 +123,7 @@ Please make sure to add at least one service in the `compose.yaml` file.
 
 * ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
 * ![Spring Boot](https://img.shields.io/badge/spring%20Boot-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
+* ![Lombok](https://img.shields.io/badge/Lombok-%23F7B500.svg?style=for-the-badge&logo=lombok&logoColor=white)
 * ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 * ![Gradle](https://img.shields.io/badge/Gradle-02303a.svg?style=for-the-badge&logo=Gradle&logoColor=white)
 
@@ -175,6 +176,8 @@ Please make sure to add at least one service in the `compose.yaml` file.
 | `19) => text)`                         | `false` |
 | `20) => )text)`                        | `false` |
 | `21) => )(text)`                       | `false` |
+
+### Тыц
 
 <p align="right">(<a href="#java-check-bracket">Back to Top</a>)</p>
 </details>
