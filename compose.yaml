@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+
+  checkServer:
+    restart: on-failure
+    build: ./
+    image: spring-java-checkbracketsber-image
+    container_name: spring-java-checkbracketsber-container
+    ports:
+      - "8080:8080"
+      - "8081:8081"
