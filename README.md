@@ -177,7 +177,5 @@ Please make sure to add at least one service in the `compose.yaml` file.
 | `20) => )text)`                        | `false` |
 | `21) => )(text)`                       | `false` |
 
-### Тыц
-
 <p align="right">(<a href="#java-check-bracket">Back to Top</a>)</p>
 </details>
